@@ -23,8 +23,8 @@
       synonyms: []
     })) 
     
-    const tags: string[] = [ "Japanese", "Weather" ]
-    const notes: string = "Yeah idk man \nDoes this work?"
+    const tags: string[] = []
+    const notes: string = ""
 
     return {
       uid: uuid(),

@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
   import { tick } from "svelte"
 
-  export let faceName
-  export let mainText
+  export let faceName: string = ""
+  export let mainText: string = ""
+  export let synonyms: string[] = []
 
-  let isEditing = !mainText ? true : false
+  let isEditing: boolean = !mainText ? true : false
   let mainTextInput
 
   async function handleClick(e) {
@@ -17,6 +18,31 @@
   function handleSubmit() {
     if (!mainText) return
     isEditing = false
+  }
+
+  let addingNewSyn: boolean = false
+  let newSyn: string
+  let newSynInput
+
+  async function handleClickAddSyn() {
+    addingNewSyn = true
+    await tick()
+    newSynInput.focus()
+  }
+
+  function handleSubmitNewSyn() {
+    if (!newSyn) {
+      addingNewSyn = false
+      return
+    }
+
+    synonyms = synonyms.concat(newSyn)
+    addingNewSyn = false
+    newSyn = ""
+  }
+
+  function handleDeleteSyn(index) {
+    synonyms = synonyms.slice(0, index).concat(synonyms.slice(index + 1))
   }
 </script>
 
@@ -36,8 +62,22 @@
   </div>
 
   <div class="synonyms">
-    <span class="syn">Teks Utama <span class="xbutton">x</span></span>
-    <button>Add synonym</button>
+    {#each synonyms as syn, index}
+    <span class="syn">
+      {syn}
+      <button class="xbutton" on:click={() => handleDeleteSyn(index)}>
+        x
+      </button>
+    </span>
+    {/each}
+      
+    {#if addingNewSyn}
+      <form on:submit|preventDefault={handleSubmitNewSyn}>
+        <input type="text" bind:value={newSyn} bind:this={newSynInput} />
+      </form>
+    {:else}
+      <button on:click={handleClickAddSyn}>Add synonym</button>
+    {/if}
   </div>
 </section>
 
@@ -84,15 +124,18 @@
     padding:  0;
 
     background-color:  transparent;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border:  none;
     border-bottom:  solid 2px #5b5b5b;
   }
 
   .maintext input:focus {
     outline:  none;
     border-bottom:  solid 2px var(--color-accent);
+  }
+
+  .synonyms {
+    display:  flex;
+    justify-content: center;
   }
 
   .synonyms button {
@@ -110,5 +153,31 @@
 
   .synonyms button:hover {
     opacity:  1;
+  }
+
+  .synonyms > * {
+    margin: 0 0.2em;
+  }
+
+  .synonyms .xbutton {
+    font-weight: 600;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .synonyms .xbutton:hover {
+    color:  var(--color-removing);
+  }
+
+  .synonyms input {
+    width: 8em;
+    background-color:  transparent;
+    border:  none;
+    border-bottom:  solid 2px #5b5b5b;
+  }
+
+  .synonyms input:focus {
+    outline:  none;
+    border-bottom:  solid 2px var(--color-accent);
   }
 </style>

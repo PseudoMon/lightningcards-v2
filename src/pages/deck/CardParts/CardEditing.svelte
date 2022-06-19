@@ -39,6 +39,7 @@
   <CardFace 
     faceName={face.faceName} 
     bind:mainText={face.content} 
+    bind:synonyms={face.synonyms}
   />
   {/each}
 
