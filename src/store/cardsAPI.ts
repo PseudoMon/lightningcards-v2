@@ -1,16 +1,6 @@
-/*
-  Here's what the API can do: 
-  1. Getting cards
-  2. Editing cards
-  3. Saving cards
-  4. Get current deck
-  5. Save current deck
-  //TODO get, save, and edit existing decks
-
-  All cards are saved in a single localStorage data: cardsDatabase.
-*/
-
 import type { Card, DataDeck, LiveDeck } from "./types"
+import { flash } from "../generics/MessageFlash/flasher"
+
 const DB_NAME = "cardsDatabase"
 const CURRENT_DECK = "currentDeck"
 
@@ -54,6 +44,13 @@ export function addNewCard(newCard: Card): void {
   saveToLocal(DB_NAME, newCardsDB)
 }
 
+export function removeCard(uidToRemove: string): void {
+  const oldCardsDB = getCardsDB()
+  const updatedCardsDB = oldCardsDB.filter(card => card.uid !== uidToRemove)
+
+  saveToLocal(DB_NAME, updatedCardsDB)
+}
+
 // export function getCardsFromTag(tag: string): Card[] {
 //   const cards = getCardsDB()
 //     .filter(card => card.tags.includes(tag))
@@ -87,7 +84,13 @@ export function getCurrentDeck(): LiveDeck | null {
   const cardsDB = getCardsDB()
   const cardsInDeck = currentDeck.cardIds.map(uid => getCardWithUID(cardsDB, uid))
 
-  return { ...currentDeck, cards: cardsInDeck}
+  // Clean out undefineds and nulls from cardsInDeck
+  const cleanCardsInDeck = cardsInDeck.filter(Boolean)
+  if (cleanCardsInDeck.length !== cardsInDeck.length) {
+    flash("Error: Some cards are missing from the database")
+  }
+
+  return { ...currentDeck, cards: cleanCardsInDeck}
 }
 
 export function saveCurrentDeck(deck: LiveDeck): void {

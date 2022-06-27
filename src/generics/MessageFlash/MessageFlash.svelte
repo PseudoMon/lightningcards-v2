@@ -13,6 +13,8 @@
 
     removalDelay = setInterval(() => isOpen = false, delay)
   })
+
+  //TODO cleanup after unmount
 </script>
 
 {#if isOpen}

@@ -44,6 +44,8 @@
 	:global(:root) {
 		--color-accent: #1EAEDB;
 		--color-removing:  #FF6860;
+		--color-soft:  #bdccff;
+		--color-green: #bcf15b;
 	}
 
 	:global(a) {

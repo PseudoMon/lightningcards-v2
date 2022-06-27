@@ -13,7 +13,9 @@
     document.body.style.overflow = null
   }
 
-  function handleConfirm() {
+  function handleConfirm(e) {
+    e.target.setAttribute("disabled", true)
+    // Make sure double-click will not trigger
     isOpen = false
     dispatch('confirm')
   }

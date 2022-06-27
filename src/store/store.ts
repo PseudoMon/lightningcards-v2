@@ -5,6 +5,7 @@ import {
   saveCurrentDeck, 
   addNewCard as addNewCardAPI,
   saveCard as saveCardAPI,
+  removeCard as removeCardAPI,
 } from "./cardsAPI"
 import type { LiveDeck, Card } from "./types"
 
@@ -57,6 +58,18 @@ function createDeckStore() {
         cards: updatedDeckCards
       }
     }),
+
+    removeCard: (uid: string) => update(store => {
+      removeCardAPI(uid)
+
+      const updatedDeck = {
+        ...store,
+        cards: store.cards.filter(card => card.uid !== uid)
+      }
+      saveCurrentDeck(updatedDeck)
+
+      return updatedDeck
+    })
   }
 }
 

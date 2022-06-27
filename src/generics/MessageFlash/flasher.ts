@@ -14,4 +14,6 @@ export const flash = (message: string, options?: FlasherOptions) => {
       delay,
     }
   })
+
+  //todo:unmount afterward
 }

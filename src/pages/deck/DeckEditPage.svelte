@@ -3,6 +3,7 @@
   import { get } from 'svelte/store'
   import { currentDeck } from '../../store/store'
   import { flash } from "../../generics/MessageFlash/flasher"
+  import CardList from "./ListParts/CardList.svelte"
 
   const navigate = useNavigate()
 
@@ -44,39 +45,8 @@
   <button on:click={ () => flash("Ello ello") }>CLICK</button>
 </div>
 
-<div class="cardlist">
-  <ol>
-    {#each $currentDeck.cards as card (card.uid)}
-    <li><Link to={`editcard/${card.uid}`}>
-      {card.faces[0].content}
-    </Link></li>
-    {/each}
-  </ol>
-</div>
+<CardList />
 
-<!-- <div class="cardlist">
-  <div
-  class="smallcard"
-  onclick={ clickCard }
-  each={ (card, i) in state.cards }
-  data-cardindex={ i }
-  >
-
-    <div class="xbutton" onclick={ removeCard } onmouseover={ hoverX } onmouseleave={ unhoverX }>
-      x
-    </div>
-
-    <div class="front" data-cardindex={ i }>
-      { card.front }
-    </div>
-
-    <div class="back" data-cardindex={ i }>
-      { card.back }
-    </div>
-
-  </div>
-</div>
- -->
 <style>
       .cardlist {
       margin-top: 10px;

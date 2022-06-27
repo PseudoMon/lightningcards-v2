@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte"
-  import ConfirmationModal from "../../../generics/ConfirmationModal.svelte"
+  import ConfirmationModal from "../../../generics/ConfirmationModal/ConfirmationModal.svelte"
   import { flash } from "../../../generics/MessageFlash/flasher"
 
   export let tags: string[]
