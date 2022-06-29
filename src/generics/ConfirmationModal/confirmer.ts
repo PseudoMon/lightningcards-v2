@@ -1,25 +1,43 @@
-import ConfirmationModal from "./ConfirmationModal"
+import ConfirmationModal from "./ConfirmationModalProm.svelte"
 
-export const askForConfirmation = async (text) => {
+export const askForConfirmation = (
+  message: string | undefined,
+) => new Promise(resolve => {
+
   const confirmationModal = new ConfirmationModal({
     target: document.body,
+    intro: true,
     props: {
-      text,
+      message,
     }
   })
 
-  let answer = new Promise()
+  let onConfirmRemover
+  let onCancelRemover
+  let onOutroEndRemover
 
-  const removeOnConfirm = confirmationModal.$on("confirm", () => answer.resolve("confirm"))
-  const removeOnCancel = confirmationModal.$on("cancel", () => answer.resolve("cancel"))
-  
-  await answer
-  
-  removeOnConfirm()
-  removeOnCancel()
-  confirmationModal.$destroy()
+  let answer = new Promise(resolveModal => {
+    onConfirmRemover = confirmationModal.$on("confirm", () => {
+      resolveModal("confirm")
+    })
+    onCancelRemover = confirmationModal.$on("cancel", () => {
+      resolveModal("cancel")
+    })
+  })
 
-  return answer
-}
+  answer.then((response) => {
+    onConfirmRemover()
+    onCancelRemover()
+    resolve(answer)
+  })
 
-// UNUSED FOR NOW
+  // The codes below ensure the component will be destroyed after animation outro
+  let outroEnd = new Promise(resolveOutro => {
+    onOutroEndRemover = confirmationModal.$on("outroEnd", () => resolveOutro())
+  })
+
+  outroEnd.then(() => {
+    onOutroEndRemover()
+    confirmationModal.$destroy()
+  })
+})

@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
   import { useNavigate, Link } from "svelte-navigator"
   import { get } from 'svelte/store'
   import { currentDeck } from '../../store/store'
   import { flash } from "../../generics/MessageFlash/flasher"
+  import { askForConfirmation } from "../../generics/ConfirmationModal/confirmer"
   import CardList from "./ListParts/CardList.svelte"
 
   const navigate = useNavigate()
@@ -19,6 +20,12 @@
 
   function onOpenImportExporter() {}
   function onOpenManagingDecks() {}
+
+  async function confirmHello() {
+    // Test function
+    const answer: "confirm" | "cancel" = await askForConfirmation()
+    console.log(answer)
+  }
 </script>
 
 <h1 class="deck-title">
@@ -43,58 +50,12 @@
   <button on:click={ onOpenImportExporter }>Import/Export Deck</button>
   <button on:click={ onOpenManagingDecks }>Manage Decks</button>
   <button on:click={ () => flash("Ello ello") }>CLICK</button>
+  <button on:click={ confirmHello }>ASK</button>
 </div>
 
 <CardList />
 
 <style>
-      .cardlist {
-      margin-top: 10px;
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: center;
-    }
-
-    .smallcard {
-      background-color: #bdccff;
-      border-radius: 3px;
-      box-shadow: 1px 1px #8f8989;
-
-      width: 30%;
-      min-width: 160px;
-      min-height: 6em;
-      padding: 0.2em;
-      margin: 0.5em;
-      cursor: pointer;
-      text-align: center;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
-
-    .smallcard:hover {
-      background-color: #bcf15b;
-      color: #231717;
-    }
-
-    .smallcard .front {
-      font-size: 1.3em;
-    }
-
-    .smallcard.red, .smallcard.red.hover {
-      background-color: #FF6860;
-      color: #563737;
-    }
-
-    .xbutton {
-      position: absolute;
-      font-size: 1.2em;
-      top: 0;
-      right: 0.4em;
-    }
-
     .header {
       text-align: center;
     }
