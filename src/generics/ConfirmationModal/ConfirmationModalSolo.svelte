@@ -1,10 +1,9 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte"
+  import { createEventDispatcher } from "svelte"
   import { fly } from "svelte/transition"
 
   const dispatch = createEventDispatcher()
-  export let isOpen = true
-  export let message = "Are you sure?"
+  export let isOpen = false
 
   $: if (isOpen) {
     document.body.style.overflow = 'hidden'
@@ -28,9 +27,9 @@
 </script>
 
 {#if isOpen}
-<div class="modal" in:fly out:fly on:outroend={() => dispatch("outroEnd")}>
+<div class="modal" in:fly out:fly>
   <div class="panel">
-    {message}
+    <slot></slot>
     <div class="confirmations">
       <button on:click={handleCancel}>Cancel</button>
       <button on:click={handleConfirm}>Confirm</button>

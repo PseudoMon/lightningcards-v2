@@ -2,7 +2,7 @@
   import { Link } from "svelte-navigator"
   import { currentDeck } from "../../../store/store"
   import type { Card } from "../../../store/types"
-  import ConfirmationModal from "../../../generics/ConfirmationModal/ConfirmationModal.svelte"
+  import { askForConfirmation } from "../../../generics/ConfirmationModal/confirmer"
 
   let cards: Card[] = $currentDeck.cards
   let cardToRemove: string | null = null
@@ -15,18 +15,13 @@
     e.target.parentNode.classList.remove("red")
   }
 
-  // function handleClickRemoveCard(uid) {
-  //   cardToRemove = uid
-  // }
-
-  console.log(cards)
-
-  function handleConfirmRemoveCard() {
-    if (!cardToRemove) return // Protect against e.g. double-click
-    console.log("Pretend", cardToRemove, "is removed")
-    currentDeck.removeCard(cardToRemove)
-    cardToRemove = null
-    //TODO
+  async function handleRemoveCard(cardUid) {
+    const answer: "confirm" | "cancel" = 
+      await askForConfirmation("Are you sure you want to remove this card?")
+    
+    if (answer === "confirm") {
+      currentDeck.removeCard(cardUid)
+    }
   }
 </script>
 
@@ -34,7 +29,7 @@
   {#each $currentDeck.cards as card (card.uid)}
     <Link class="smallcard" to={`editcard/${card.uid}`}>
       <div class="xbutton" 
-        on:click|preventDefault={() => { cardToRemove = card.uid }}
+        on:click|preventDefault={() => handleRemoveCard(card.uid)}
         on:mouseover={handleMouseoverX}
         on:mouseleave={handleMouseleaveX}
       >
@@ -50,14 +45,6 @@
     </Link>
   {/each}
 </section>
-
-<ConfirmationModal 
-  isOpen={Boolean(cardToRemove)}
-  on:confirm={handleConfirmRemoveCard}
-  on:cancel={() => { cardToRemove = null }}
->
-  Are you sure you want to remove this card?
-</ConfirmationModal>
 
 <style>
   .cardlist {

@@ -1,4 +1,4 @@
-import ConfirmationModal from "./ConfirmationModalProm.svelte"
+import ConfirmationModal from "./ConfirmationModal.svelte"
 
 export const askForConfirmation = (
   message: string | undefined,
@@ -33,7 +33,9 @@ export const askForConfirmation = (
 
   // The codes below ensure the component will be destroyed after animation outro
   let outroEnd = new Promise(resolveOutro => {
-    onOutroEndRemover = confirmationModal.$on("outroEnd", () => resolveOutro())
+    onOutroEndRemover = confirmationModal.$on("outroEnd", () => {
+      resolveOutro("resolved")
+    })
   })
 
   outroEnd.then(() => {
