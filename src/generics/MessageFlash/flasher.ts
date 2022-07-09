@@ -15,5 +15,16 @@ export const flash = (message: string, options?: FlasherOptions) => {
     }
   })
 
-  //todo:unmount afterward
+  let onOutroEndRemover
+
+  let outroEnd = new Promise(resolveOutro => {
+    onOutroEndRemover = messageFlash.$on("outroEnd", () => {
+      resolveOutro("resolved")
+    })
+  })
+
+  outroEnd.then(() => {
+    onOutroEndRemover()
+    messageFlash.$destroy()
+  })
 }

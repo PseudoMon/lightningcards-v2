@@ -1,7 +1,8 @@
 <script>
-  import { onMount } from "svelte"
+  import { onMount, createEventDispatcher } from "svelte"
   import { fly, fade } from "svelte/transition"
 
+  const dispatch = createEventDispatcher()
   export let message = "Placeholder text"
   export let delay = 3000
   
@@ -13,12 +14,12 @@
 
     removalDelay = setInterval(() => isOpen = false, delay)
   })
-
-  //TODO cleanup after unmount
 </script>
 
 {#if isOpen}
-<div class="flash" transition:fly={{ y: -40 }}>
+<div class="flash" 
+  transition:fly={{ y: -40 }} 
+  on:outroend={() => dispatch("outroEnd")}>
   { message }
 </div>
 {/if}
