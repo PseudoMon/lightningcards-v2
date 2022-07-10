@@ -3,6 +3,7 @@
   import Checkbox from "@smui/checkbox"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
   import TableCheckbox from "./TableParts/TableCheckbox.svelte"
+  import TagsFilter from "./TableParts/TagsFilter.svelte"
 
   const dummyCards: Card[] = [
     {
@@ -75,35 +76,51 @@
     }
   ] 
 
-  let selectedCardsIDs = []
+  $: cardsShown = dummyCards.filter(card => {
+    if (filterTags.length === 0) return true
+
+    return filterTags.every(filterTag => card.tags.includes(filterTag))
+    // Return true if every tag in the filter also exists within the card
+  })
+
+  let selectedCards = []
+  let filterTags = []
+  let shownFaces = ["Front", "Back"]
 </script>
 
 <main>
   <h1>Cards Database</h1>
   <section class="cardsdb">
+    <TagsFilter bind:tags={filterTags} />
     <DataTable>
       <Head>
         <Row>
           <Cell checkbox class="checkbox-col">
             <Checkbox />
           </Cell>
-          <Cell>Face 1</Cell>
-          <Cell>Face 2</Cell>
+          {#each shownFaces as face (face)}
+            <Cell>{face}</Cell>
+          {/each}
           <Cell>Tags</Cell>
         </Row>
       </Head>
       <Body>
-        {#each dummyCards as card (card.uid)}
+        {#each cardsShown as card (card.uid)}
           <Row>
             <Cell checkbox>
               <Checkbox
-                bind:group={selectedCardsIDs}
-                value={card.uid}
+                bind:group={selectedCards}
+                value={card}
                 valueKey={card.uid}
               />
             </Cell>
-            <Cell>{card.faces[0].content}</Cell>
-            <Cell>{card.faces[1].content}</Cell>
+            {#each shownFaces as faceName (faceName)}
+              <Cell>{
+                card.faces
+                  .find(face => face.faceName === faceName)
+                  ?.content || ""
+              }</Cell>
+            {/each}
             <Cell>{card.tags.join(", ")}</Cell>
           </Row>
         {/each}
@@ -113,19 +130,16 @@
 
   <section class="sidebar">
     <h2>Checked cards:</h2>
-    <p>{selectedCardsIDs.join(", ")}</p>
+    <p>{selectedCards.map(card => card.faces[0].content).join(", ")}</p>
   </section>
 </main>
 
 <style>
   .cardsdb :global(table) {
-    border:  solid transparent;
-    border-radius: 10px;
     text-align: left;
-
     table-layout: fixed;
     width:  100%;
-    border-spacing:  0;
+    border-spacing: 0;
   }
 
   .cardsdb :global(th), .cardsdb :global(td) {
@@ -156,6 +170,7 @@
   main {
     display: grid;
     grid-template-columns: 2fr 1fr;
+    gap: 10px;
   }
 
   main > h1 {

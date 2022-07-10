@@ -59,6 +59,7 @@
     width: 30%;
     min-width:  160px; 
     min-height:  6em;
+    text-align: center;
 
     background-color:  var(--color-soft);
     border-radius: 3px;
