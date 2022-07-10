@@ -1,5 +1,6 @@
 <script lang="ts">
-  import SvelteTable from "svelte-table"
+  import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
+  import Checkbox from "@smui/checkbox"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
   import TableCheckbox from "./TableParts/TableCheckbox.svelte"
 
@@ -74,51 +75,45 @@
     }
   ] 
 
-  const columns = [
-    // {
-    //   key: "uid",
-    //   title: "ID",
-    //   value: data => data.uid,
-    // },
-    {
-      key: "checkbox",
-      title: "",
-      value: data => "",
-      renderComponent: {
-        component: TableCheckbox,
-        uid: 
-      },
-      headerClass: "checkbox-col",
-    },
-    {
-      key: "frontContent",
-      title: "Face 1",
-      value: data => data.faces[0].content,
-    },
-    {
-      key: "frontContent",
-      title: "Face 2",
-      value: data => data.faces[1].content,
-    },
-    {
-      key: "tags",
-      title: "Tags",
-      value: data => data.tags,
-      renderValue: data => data.tags.join(", "),
-    }
-  ]
-
-   let checkedCardIDs: string[] = []
+  let selectedCardsIDs = []
 </script>
 
 <main>
   <h1>Cards Database</h1>
   <section class="cardsdb">
-    <SvelteTable 
-      classNameTable="cards-table" 
-      columns={columns} 
-      rows={dummyCards} 
-    />
+    <DataTable>
+      <Head>
+        <Row>
+          <Cell checkbox class="checkbox-col">
+            <Checkbox />
+          </Cell>
+          <Cell>Face 1</Cell>
+          <Cell>Face 2</Cell>
+          <Cell>Tags</Cell>
+        </Row>
+      </Head>
+      <Body>
+        {#each dummyCards as card (card.uid)}
+          <Row>
+            <Cell checkbox>
+              <Checkbox
+                bind:group={selectedCardsIDs}
+                value={card.uid}
+                valueKey={card.uid}
+              />
+            </Cell>
+            <Cell>{card.faces[0].content}</Cell>
+            <Cell>{card.faces[1].content}</Cell>
+            <Cell>{card.tags.join(", ")}</Cell>
+          </Row>
+        {/each}
+      </Body>
+    </DataTable>
+  </section>
+
+  <section class="sidebar">
+    <h2>Checked cards:</h2>
+    <p>{selectedCardsIDs.join(", ")}</p>
   </section>
 </main>
 
@@ -152,6 +147,10 @@
 
   .cardsdb :global(.checkbox-col) {
     width: 1em;
+  }
+
+  .cardsdb :global(.mdc-checkbox) {
+    display: flex;
   }
 
   main {
