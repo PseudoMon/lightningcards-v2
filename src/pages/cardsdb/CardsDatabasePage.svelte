@@ -86,6 +86,7 @@
   let selectedCards = []
   let filterTags = []
   let shownFaces = ["Front", "Back"]
+  let customFaces = false
 </script>
 
 <main>
@@ -98,9 +99,14 @@
           <Cell checkbox class="checkbox-col">
             <Checkbox />
           </Cell>
-          {#each shownFaces as face (face)}
-            <Cell>{face}</Cell>
-          {/each}
+          {#if customFaces}
+            {#each shownFaces as face (face)}
+              <Cell>{face}</Cell>
+            {/each}
+          {:else}
+            <Cell>Face 1</Cell>
+            <Cell>Face 2</Cell>
+          {/if}
           <Cell>Tags</Cell>
         </Row>
       </Head>
@@ -114,13 +120,18 @@
                 valueKey={card.uid}
               />
             </Cell>
-            {#each shownFaces as faceName (faceName)}
-              <Cell>{
-                card.faces
-                  .find(face => face.faceName === faceName)
-                  ?.content || ""
-              }</Cell>
-            {/each}
+            {#if customFaces}
+              {#each shownFaces as faceName (faceName)}
+                <Cell>{
+                  card.faces
+                    .find(face => face.faceName === faceName)
+                    ?.content || ""
+                }</Cell>
+              {/each}
+            {:else}
+              <Cell>{card.faces[0].content}</Cell>
+              <Cell>{card.faces[1].content}</Cell>
+            {/if}
             <Cell>{card.tags.join(", ")}</Cell>
           </Row>
         {/each}
@@ -129,6 +140,17 @@
   </section>
 
   <section class="sidebar">
+    <div>
+      <h3>Faces Shown</h3>
+      <div>
+        <label>
+          <input type="checkbox" bind:checked={customFaces}>
+          Customize faces shown
+        </label>
+      </div>
+      <TagsFilter bind:tags={shownFaces} />
+    </div>
+
     <h2>Checked cards:</h2>
     <p>{selectedCards.map(card => card.faces[0].content).join(", ")}</p>
   </section>
@@ -175,6 +197,12 @@
 
   main > h1 {
     grid-column: 1 / -1;
+  }
+
+  .section input[type="checkbox"] {
+    width: .8em;
+    height: .8em;
+    vertical-align: middle;
   }
 </style>
 
