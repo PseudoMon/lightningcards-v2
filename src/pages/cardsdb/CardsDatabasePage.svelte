@@ -87,6 +87,21 @@
   let filterTags = []
   let shownFaces = ["Front", "Back"]
   let customFaces = false
+  let uidToCheckbox = {}
+
+  function toggleCardCheckbox(card) {
+    const idx = selectedCards.map(card => card.uid).indexOf(card.uid)
+
+    if (idx > -1) {
+      selectedCards = [
+        ...selectedCards.slice(0, idx), 
+        ...selectedCards.slice(idx + 1)
+      ]
+    }
+    else {
+      selectedCards = selectedCards.concat(card)
+    }
+  }
 </script>
 
 <main>
@@ -112,7 +127,7 @@
       </Head>
       <Body>
         {#each cardsShown as card (card.uid)}
-          <Row>
+          <Row on:click={() => toggleCardCheckbox(card)}>
             <Cell checkbox>
               <Checkbox
                 bind:group={selectedCards}
@@ -199,7 +214,7 @@
     grid-column: 1 / -1;
   }
 
-  .section input[type="checkbox"] {
+  .sidebar input[type="checkbox"] {
     width: .8em;
     height: .8em;
     vertical-align: middle;
