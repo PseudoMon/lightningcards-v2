@@ -44,5 +44,7 @@
   }
 </script>
 
-<h1>Adding New Card</h1>
-<CardEditing cardData={cardData} on:saveCard={handleSaveCard} />
+<main>
+  <h1>Adding New Card</h1>
+  <CardEditing cardData={cardData} on:saveCard={handleSaveCard} />
+</main>

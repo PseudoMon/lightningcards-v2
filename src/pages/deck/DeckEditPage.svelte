@@ -28,32 +28,35 @@
   }
 </script>
 
-<h1 class="deck-title">
-  {#if !editingName}
-    <span>{ deckTitle }</span>
-  {/if}
-  {#if editingName}
-    <form if={ editingName } on:submit={ handleSubmitTitle }>
-      <input
-        id="namefield"
-        type="text"
-        name="newTitle"
-        autocomplete="off"
-        value={ deckTitle } />
-    </form>
-  {/if}
-</h1>
+<main>
+  <h1 class="deck-title">
+    {#if !editingName}
+      <span>{ deckTitle }</span>
+    {/if}
+    {#if editingName}
+      <form if={ editingName } on:submit={ handleSubmitTitle }>
+        <input
+          id="namefield"
+          type="text"
+          name="newTitle"
+          autocomplete="off"
+          value={ deckTitle } />
+      </form>
+    {/if}
+  </h1>
 
-<div class="header">
-  <button on:click={ () => editingName = true }>Edit Deck Name</button>
-  <button on:click={ () =>  navigate("addcard") }>Add New Card</button>
-  <button on:click={ onOpenImportExporter }>Import/Export Deck</button>
-  <button on:click={ onOpenManagingDecks }>Manage Decks</button>
-  <button on:click={ () => flash("Ello ello") }>CLICK</button>
-  <button on:click={ confirmHello }>ASK</button>
-</div>
+  <div class="header">
+    <button on:click={ () => editingName = true }>Edit Deck Name</button>
+    <button on:click={ () =>  navigate("addcard") }>Add New Card</button>
+    <button on:click={ onOpenImportExporter }>Import/Export Deck</button>
+    <button on:click={ onOpenManagingDecks }>Manage Decks</button>
+    <button on:click={ () => flash("Ello ello") }>CLICK</button>
+    <button on:click={ confirmHello }>ASK</button>
+    <Link to="/cardsdb"><button>Cards Database</button></Link>
+  </div>
 
-<CardList />
+  <CardList />
+</main>
 
 <style>
     .header {

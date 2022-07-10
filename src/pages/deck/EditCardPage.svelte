@@ -48,11 +48,13 @@
 
 </script>
 
-{#if !isLoading}
-{#if isNotFound}
-  <h1>Error 404: Card with id {carduid} is not found</h1>
-{:else}
-  <h1>Editing Card</h1>
-  <CardEditing cardData={cardData} on:saveCard={handleSaveCard}/>
-{/if}
-{/if}
+<main>
+  {#if !isLoading}
+  {#if isNotFound}
+    <h1>Error 404: Card with id {carduid} is not found</h1>
+  {:else}
+    <h1>Editing Card</h1>
+    <CardEditing cardData={cardData} on:saveCard={handleSaveCard}/>
+  {/if}
+  {/if}
+</main>
