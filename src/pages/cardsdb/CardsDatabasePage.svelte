@@ -1,80 +1,14 @@
 <script lang="ts">
+  import rawDummyCards from "./dummyCards"
   import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
   import Checkbox from "@smui/checkbox"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
+  import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
+  import CustomFacesControl from "./SidebarParts/CustomFacesControl.svelte"
   import TableCheckbox from "./TableParts/TableCheckbox.svelte"
-  import TagsFilter from "./TableParts/TagsFilter.svelte"
+  
 
-  const dummyCards: Card[] = [
-    {
-      uid: "whatev",
-      faces: [
-        {
-          faceName: "Front",
-          content: "Alice",
-          synonyms: [],
-        },
-        {
-          faceName: "Back",
-          content: "Bob",
-          synonyms: [],
-        },
-      ],
-      notes: "",
-      tags: ["Test"]
-    },
-    {
-      uid: "whadsadtev",
-      faces: [
-        {
-          faceName: "Front",
-          content: "Chernobog",
-          synonyms: [],
-        },
-        {
-          faceName: "Back",
-          content: "Bielebog",
-          synonyms: [],
-        },
-      ],
-      notes: "",
-      tags: ["Test2"]
-    },
-    {
-      uid: "whgdsdatdsadev",
-      faces: [
-        {
-          faceName: "Front",
-          content: "Ferdinand",
-          synonyms: [],
-        },
-        {
-          faceName: "Back",
-          content: "Lorenz",
-          synonyms: [],
-        },
-      ],
-      notes: "",
-      tags: ["Test"]
-    },
-    {
-      uid: "whaawwdsatev",
-      faces: [
-        {
-          faceName: "Front",
-          content: "Seth",
-          synonyms: [],
-        },
-        {
-          faceName: "Back",
-          content: "Orson",
-          synonyms: [],
-        },
-      ],
-      notes: "",
-      tags: ["Test", "Test2"]
-    }
-  ] 
+  const dummyCards: Card[] = rawDummyCards
 
   $: cardsShown = dummyCards.filter(card => {
     if (filterTags.length === 0) return true
@@ -107,7 +41,11 @@
 <main>
   <h1>Cards Database</h1>
   <section class="cardsdb">
-    <TagsFilter bind:tags={filterTags} />
+    <InlineAddableList 
+      style="margin-bottom: 0.5em"
+      label="Filter by Tags:" 
+      addingLabel="Add tag" 
+      bind:dataset={filterTags} />
     <DataTable>
       <Head>
         <Row>
@@ -155,17 +93,11 @@
   </section>
 
   <section class="sidebar">
-    <div>
-      <h3>Faces Shown</h3>
-      <div>
-        <label>
-          <input type="checkbox" bind:checked={customFaces}>
-          Customize faces shown
-        </label>
-      </div>
-      <TagsFilter bind:tags={shownFaces} />
-    </div>
-
+    <CustomFacesControl 
+      className="sidebar-control"
+      isUsingCustomFaces={customFaces}
+      shownFaces={shownFaces}
+    />
     <h2>Checked cards:</h2>
     <p>{selectedCards.map(card => card.faces[0].content).join(", ")}</p>
   </section>
@@ -217,7 +149,10 @@
   .sidebar input[type="checkbox"] {
     width: .8em;
     height: .8em;
-    vertical-align: middle;
+  }
+
+  .sidebar-control h3 {
+    margin-bottom: 0.5em;
   }
 </style>
 
