@@ -1,13 +1,13 @@
 <script lang="ts">
-  import rawDummyCards from "./dummyCards"
-  import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
+  import { Link } from "svelte-navigator"
+  import DataTable, { Head, Body, Row, Cell } from "@smui/data-table"
   import Checkbox from "@smui/checkbox"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
   import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
   import CustomFacesControl from "./SidebarParts/CustomFacesControl.svelte"
   import TableCheckbox from "./TableParts/TableCheckbox.svelte"
   
-
+  import rawDummyCards from "./dummyCards"
   const dummyCards: Card[] = rawDummyCards
 
   $: cardsShown = dummyCards.filter(card => {
@@ -93,6 +93,7 @@
   </section>
 
   <section class="sidebar">
+    <Link to="importlegacy">Import Legacy Deck</Link>
     <CustomFacesControl 
       className="sidebar-control"
       isUsingCustomFaces={customFaces}

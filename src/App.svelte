@@ -5,6 +5,7 @@
 	import AddCardPage from "./pages/deck/AddCardPage.svelte"
 	import EditCardPage from "./pages/deck/EditCardPage.svelte"
 	import CardsDatabasePage from "./pages/cardsdb/CardsDatabasePage.svelte"
+	import ImportLegacyDeck from "./pages/cardsdb/ImportLegacyDeck.svelte"
 </script>
 
 <Router>
@@ -19,7 +20,7 @@
 	</Route>
 	
 	<Route path="/deck/*">
-		<Route path ="/">
+		<Route path="/">
 			<DeckEditPage/>
 		</Route>
 
@@ -32,8 +33,14 @@
 		</Route>
 	</Route>
 
-	<Route path="/cardsdb">
-		<CardsDatabasePage />
+	<Route path="/cardsdb/*">
+		<Route path="/">
+			<CardsDatabasePage />
+		</Route>
+
+		<Route path="/importlegacy">
+			<ImportLegacyDeck />
+		</Route>
 	</Route>
 
 	<Route path="/practice">

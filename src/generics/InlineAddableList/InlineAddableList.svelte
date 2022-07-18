@@ -4,7 +4,8 @@
   export let dataset: string[]
   export let label: string = "Data:"
   export let addingLabel: string = "Add Data"
-  export let style: string
+  export let style: string = ""
+  export let className: string = ""
 
   let addingNewData: boolean = false
   let newData: string = ""
@@ -32,12 +33,12 @@
   }
 </script>
 
-<div style={style}>
+<div style={style} class={className}>
   <span>{label}</span> 
   <ol class="dataset">
     {#each dataset as data}
       <li on:click={() => handleRemoveData(data)}>
-        <button>{data}</button>
+        <button type="button">{data}</button>
       </li>
     {/each}
 
@@ -48,6 +49,7 @@
     {/if}
 
     <button 
+      type="button"
       class="add-data" 
       on:click={handleClickAddData}>
       {addingLabel}
