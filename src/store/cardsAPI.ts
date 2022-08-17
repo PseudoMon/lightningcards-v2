@@ -3,6 +3,7 @@ import { flash } from "../generics/MessageFlash/flasher"
 
 const DB_NAME = "cardsDatabase"
 const CURRENT_DECK = "currentDeck"
+const DECKS_DB = "decksDatabase"
 
 function saveToLocal(location: string, data: any): void {
   console.log("Saved local data to", location)
@@ -19,6 +20,13 @@ export function getCardsDB(): Card[] {
   if (cardsDatabase === null) return []
   
   return cardsDatabase
+}
+
+export function getDecksDB(): DataDeck[] {
+  const decksDatabase = loadFromLocal(DECKS_DB)
+  if (decksDatabase === null) return []
+
+  return decksDatabase
 }
 
 export function saveCard(editedCard: Card): void {
@@ -93,7 +101,7 @@ export function getCurrentDeck(): LiveDeck | null {
   return { ...currentDeck, cards: cleanCardsInDeck}
 }
 
-export function saveCurrentDeck(deck: LiveDeck): void {
+function liveDeckToDataDeck(deck: LiveDeck): DataDeck {
   const cardIds: string[] = deck.cards.map(card => card.uid)
   
   const dataDeck: DataDeck = {
@@ -104,5 +112,20 @@ export function saveCurrentDeck(deck: LiveDeck): void {
     cardIds,
   }
 
+  return dataDeck
+}
+
+export function saveCurrentDeck(deck: LiveDeck): void {
+  const dataDeck = liveDeckToDataDeck(deck)
+
   saveToLocal(CURRENT_DECK, dataDeck)
+}
+
+export function addNewDeck(deck: LiveDeck): void {
+  const newDataDeck = liveDeckToDataDeck(deck)
+
+  const oldDecksDB = getDecksDB();
+  const newDecksDB = oldDecksDB.concat(newDataDeck)
+
+  saveToLocal(DECKS_DB, newDecksDB)
 }

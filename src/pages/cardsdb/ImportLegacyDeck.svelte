@@ -1,8 +1,8 @@
 <script lang="ts">
   import { v4 as uuid } from "uuid"
   import { useNavigate } from "svelte-navigator"
-  import type { Card, CardFace as CardFaceType } from "../../store/types"
-  import { addNewCard } from "../../store/cardsAPI"
+  import type { Card, CardFace as CardFaceType, LiveDeck } from "../../store/types"
+  import { addNewCard, addNewDeck } from "../../store/cardsAPI"
   import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
   import { flash } from "../../generics/MessageFlash/flasher"
   import CardsTable from "./TableParts/CardsTable.svelte"
@@ -17,7 +17,6 @@
   let backFaceName: string = "Back"
 
   function handleImport() {
-    //console.log(dataToImport)
     let parsedData = ""
     try {
       parsedData = JSON.parse(dataToImport)
@@ -28,8 +27,6 @@
         return
       }
     }
-
-    console.log(parsedData.cards[0])
 
     deckTitle = parsedData.name  
 
@@ -51,12 +48,11 @@
       tags: [],
     }))
 
-    console.log(parsedCards)
     deckCards = parsedCards
   }
 
   function handleSubmit() {
-    const faceRenamedCards = deckCards.map((card) => ({
+    const faceRenamedCards: Card[] = deckCards.map((card) => ({
       ...card,
       faces: [
         {...card.faces[0], faceName: frontFaceName },
@@ -64,9 +60,20 @@
       ]
     }))
 
+    const newDeck: LiveDeck = {
+      uid: uuid(),
+      title: deckTitle,
+      faces: [frontFaceName, backFaceName],
+      mainFace: frontFaceName,
+      cards: faceRenamedCards,
+    }
+
+
     faceRenamedCards.forEach((card) => {
       addNewCard(card);
     })
+
+    addNewDeck(newDeck);
 
     flash("Cards succesfully imported!")
     navigate("/cardsdb")
