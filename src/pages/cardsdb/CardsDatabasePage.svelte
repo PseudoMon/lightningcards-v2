@@ -64,38 +64,6 @@
 </main>
 
 <style>
-  .cardsdb :global(table) {
-    text-align: left;
-    table-layout: fixed;
-    width:  100%;
-    border-spacing: 0;
-  }
-
-  .cardsdb :global(th), .cardsdb :global(td) {
-    padding: 10px;
-  }
-
-  .cardsdb :global(th) {
-   /* border-bottom: solid black;*/
-    background-color: #fafafa;
-  }
-
-  .cardsdb :global(tr:hover) {
-    background-color: #fafafa;
-  }
-
-  .cardsdb :global(tr td) {
-    border-bottom: solid 1px #eee;
-  }
-
-  .cardsdb :global(.checkbox-col) {
-    width: 1em;
-  }
-
-  .cardsdb :global(.mdc-checkbox) {
-    display: flex;
-  }
-
   main {
     display: grid;
     grid-template-columns: 2fr 1fr;

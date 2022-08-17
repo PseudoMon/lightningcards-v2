@@ -23,50 +23,52 @@
   }
 </script>
 
-<DataTable>
-  <Head>
-    <Row>
-      <Cell checkbox class="checkbox-col">
-        <Checkbox />
-      </Cell>
-      {#if customFaces}
-        {#each shownFaces as face (face)}
-          <Cell>{face}</Cell>
-        {/each}
-      {:else}
-        <Cell>Face 1</Cell>
-        <Cell>Face 2</Cell>
-      {/if}
-      <Cell>Tags</Cell>
-    </Row>
-  </Head>
-  <Body>
-    {#each cardsShown as card (card.uid)}
-      <Row on:click={() => toggleCardCheckbox(card)}>
-        <Cell checkbox>
-          <Checkbox
-            bind:group={selectedCards}
-            value={card}
-            valueKey={card.uid}
-          />
+<div class="cards-table">
+  <DataTable>
+    <Head>
+      <Row>
+        <Cell checkbox class="checkbox-col">
+          <Checkbox />
         </Cell>
         {#if customFaces}
-          {#each shownFaces as faceName (faceName)}
-            <Cell>{
-              card.faces
-                .find(face => face.faceName === faceName)
-                ?.content || ""
-            }</Cell>
+          {#each shownFaces as face (face)}
+            <Cell>{face}</Cell>
           {/each}
         {:else}
-          <Cell>{card.faces[0].content}</Cell>
-          <Cell>{card.faces[1].content}</Cell>
+          <Cell>Face 1</Cell>
+          <Cell>Face 2</Cell>
         {/if}
-        <Cell>{card.tags.join(", ")}</Cell>
+        <Cell>Tags</Cell>
       </Row>
-    {/each}
-  </Body>
-</DataTable>
+    </Head>
+    <Body>
+      {#each cardsShown as card (card.uid)}
+        <Row on:click={() => toggleCardCheckbox(card)}>
+          <Cell checkbox>
+            <Checkbox
+              bind:group={selectedCards}
+              value={card}
+              valueKey={card.uid}
+            />
+          </Cell>
+          {#if customFaces}
+            {#each shownFaces as faceName (faceName)}
+              <Cell>{
+                card.faces
+                  .find(face => face.faceName === faceName)
+                  ?.content || ""
+              }</Cell>
+            {/each}
+          {:else}
+            <Cell>{card.faces[0].content}</Cell>
+            <Cell>{card.faces[1].content}</Cell>
+          {/if}
+          <Cell>{card.tags.join(", ")}</Cell>
+        </Row>
+      {/each}
+    </Body>
+  </DataTable>
+</div>
 
 <style>
   * :global(table) {

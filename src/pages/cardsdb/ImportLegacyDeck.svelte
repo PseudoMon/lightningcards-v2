@@ -1,10 +1,20 @@
 <script lang="ts">
+  import { v4 as uuid } from "uuid"
+  import { useNavigate } from "svelte-navigator"
+  import type { Card, CardFace as CardFaceType } from "../../store/types"
+  import { addNewCard } from "../../store/cardsAPI"
   import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
   import { flash } from "../../generics/MessageFlash/flasher"
+  import CardsTable from "./TableParts/CardsTable.svelte"
+
+  const navigate = useNavigate();
   
   let tags: string[] = []
   let dataToImport: string = ""
-  let deckTitle = ""
+  let deckTitle: string = ""
+  let deckCards: Card[] = []
+  let frontFaceName: string = "Front"
+  let backFaceName: string = "Back"
 
   function handleImport() {
     //console.log(dataToImport)
@@ -21,8 +31,54 @@
 
     console.log(parsedData.cards[0])
 
-    deckTitle = parsedData.name   
+    deckTitle = parsedData.name  
+
+    const parsedCards = parsedData.cards.map((card) => ({
+      uid: uuid(),
+      faces: [
+        {
+          faceName: "Front",
+          content: card.front,
+          synonyms: card.synFront,
+        },
+        {
+          faceName: "Back",
+          content: card.back,
+          synonyms: card.synBack
+        },
+      ],
+      notes: "",
+      tags: [],
+    }))
+
+    console.log(parsedCards)
+    deckCards = parsedCards
   }
+
+  function handleSubmit() {
+    const faceRenamedCards = deckCards.map((card) => ({
+      ...card,
+      faces: [
+        {...card.faces[0], faceName: frontFaceName },
+        {...card.faces[1], faceName: backFaceName },
+      ]
+    }))
+
+    faceRenamedCards.forEach((card) => {
+      addNewCard(card);
+    })
+
+    flash("Cards succesfully imported!")
+    navigate("/cardsdb")
+  }
+
+
+  // Adding tags
+  $: deckCards = deckCards.map((card) => ({
+    ...card,
+    tags: tags,
+  }))
+  
 </script>
 
 <main>
@@ -34,6 +90,7 @@
     <button on:click={handleImport}>Import</button>
   </section>
 
+  {#if deckTitle}
   <form class="deck-adjuster">
     <h2>Adjust Deck</h2>
     <label>
@@ -50,14 +107,24 @@
 
     <label>
       Rename Front to
-      <input type="text">
+      <input type="text" bind:value={frontFaceName}>
     </label>
 
     <label>
       Rename Back to
-      <input type="text">
+      <input type="text" bind:value={backFaceName}>
     </label>
   </form>
+
+  <h2>Cards Preview</h2>
+
+  <div class="cards-preview">
+    <CardsTable cardsShown={deckCards} />
+  </div>
+
+  <button on:click={handleSubmit}>Submit</button>
+  {/if}
+
 </main>
 
 <style>
@@ -91,4 +158,10 @@
   * :global(.form-child ol) {
     text-align: left;
   } 
+
+  .cards-preview {
+    width: 80%;
+    max-width: 800px;
+    margin:  10px auto;
+  }
 </style>
