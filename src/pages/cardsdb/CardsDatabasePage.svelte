@@ -1,11 +1,9 @@
 <script lang="ts">
   import { Link } from "svelte-navigator"
-  import DataTable, { Head, Body, Row, Cell } from "@smui/data-table"
-  import Checkbox from "@smui/checkbox"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
   import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
+  import CardsTable from "./TableParts/CardsTable.svelte"
   import CustomFacesControl from "./SidebarParts/CustomFacesControl.svelte"
-  import TableCheckbox from "./TableParts/TableCheckbox.svelte"
   
   import rawDummyCards from "./dummyCards"
   const dummyCards: Card[] = rawDummyCards
@@ -46,58 +44,19 @@
       label="Filter by Tags:" 
       addingLabel="Add tag" 
       bind:dataset={filterTags} />
-    <DataTable>
-      <Head>
-        <Row>
-          <Cell checkbox class="checkbox-col">
-            <Checkbox />
-          </Cell>
-          {#if customFaces}
-            {#each shownFaces as face (face)}
-              <Cell>{face}</Cell>
-            {/each}
-          {:else}
-            <Cell>Face 1</Cell>
-            <Cell>Face 2</Cell>
-          {/if}
-          <Cell>Tags</Cell>
-        </Row>
-      </Head>
-      <Body>
-        {#each cardsShown as card (card.uid)}
-          <Row on:click={() => toggleCardCheckbox(card)}>
-            <Cell checkbox>
-              <Checkbox
-                bind:group={selectedCards}
-                value={card}
-                valueKey={card.uid}
-              />
-            </Cell>
-            {#if customFaces}
-              {#each shownFaces as faceName (faceName)}
-                <Cell>{
-                  card.faces
-                    .find(face => face.faceName === faceName)
-                    ?.content || ""
-                }</Cell>
-              {/each}
-            {:else}
-              <Cell>{card.faces[0].content}</Cell>
-              <Cell>{card.faces[1].content}</Cell>
-            {/if}
-            <Cell>{card.tags.join(", ")}</Cell>
-          </Row>
-        {/each}
-      </Body>
-    </DataTable>
+    <CardsTable 
+      customFaces={customFaces} 
+      shownFaces={shownFaces} 
+      cardsShown={cardsShown} 
+      bind:selectedCards={selectedCards} />
   </section>
 
   <section class="sidebar">
     <Link to="importlegacy">Import Legacy Deck</Link>
     <CustomFacesControl 
       className="sidebar-control"
-      isUsingCustomFaces={customFaces}
-      shownFaces={shownFaces}
+      bind:isUsingCustomFaces={customFaces}
+      bind:shownFaces={shownFaces}
     />
     <h2>Checked cards:</h2>
     <p>{selectedCards.map(card => card.faces[0].content).join(", ")}</p>

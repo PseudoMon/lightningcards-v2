@@ -34,7 +34,7 @@
 	</Route>
 
 	<Route path="/cardsdb/*">
-		<Route path="/">
+		<Route path="/">	
 			<CardsDatabasePage />
 		</Route>
 
@@ -44,7 +44,7 @@
 	</Route>
 
 	<Route path="/practice">
-		PRACTICE HERE
+		PRACTICE HEREsdasdasd
 	</Route>
 
 
