@@ -19,7 +19,6 @@
   }
 
   function onOpenImportExporter() {}
-  function onOpenManagingDecks() {}
 
   async function confirmHello() {
     // Test function
@@ -49,7 +48,7 @@
     <button on:click={ () => editingName = true }>Edit Deck Name</button>
     <button on:click={ () =>  navigate("addcard") }>Add New Card</button>
     <button on:click={ onOpenImportExporter }>Import/Export Deck</button>
-    <button on:click={ onOpenManagingDecks }>Manage Decks</button>
+    <button on:click={ () => navigate("/managedecks") }>Manage Decks</button>
     <button on:click={ () => flash("Ello ello") }>CLICK</button>
     <button on:click={ confirmHello }>ASK</button>
     <Link to="/cardsdb"><button>Cards Database</button></Link>

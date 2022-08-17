@@ -6,13 +6,12 @@
 	import EditCardPage from "./pages/deck/EditCardPage.svelte"
 	import CardsDatabasePage from "./pages/cardsdb/CardsDatabasePage.svelte"
 	import ImportLegacyDeck from "./pages/cardsdb/ImportLegacyDeck.svelte"
+	import ManageDecksPage from "./pages/decksdb/ManageDecksPage.svelte"
 </script>
 
 <Router>
 <div class="container">
-
 	<Header/>
-
 
 	<Route path="/">
 		<h1>Welcome to Lightning Cards!</h1>
@@ -43,6 +42,10 @@
 		</Route>
 	</Route>
 
+	<Route path="/managedecks">
+		<ManageDecksPage />
+	</Route>
+
 	<Route path="/practice">
 		PRACTICE HEREsdasdasd
 	</Route>
@@ -67,7 +70,8 @@
 	:global(button) {
 		cursor:  pointer;
 		padding: 10px 30px;
-		border-radius: 5px;
+		min-height: 38px;
+		border-radius: 4px;
 		border: solid 1px #bbb;
 		color: #333;
 		background-color: transparent;
