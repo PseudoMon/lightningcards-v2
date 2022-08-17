@@ -1,0 +1,63 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\aliya\.node\corepack\yarn\1.22.15\bin\yarn.js install
+
+PATH: 
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Calibre2\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\aliya\AppData\Local\pnpm;C:\Users\aliya\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\aliya\AppData\Local\Programs\Python\Python39\;C:\Users\aliya\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Sublime Text;C:\Users\aliya\AppData\Roaming\Python\Python39\Scripts\;C:\Users\aliya\ffmpeg-5.0-essentials_build\bin;C:\Users\aliya\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  16.15.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: getaddrinfo ENOTFOUND registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
+
+npm manifest: 
+  {
+    "name": "svelte-app",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "build": "rollup -c",
+      "dev": "rollup -c -w",
+      "start": "sirv public --no-clear -s",
+      "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+      "check": "svelte-check --tsconfig ./tsconfig.json"
+    },
+    "devDependencies": {
+      "@rollup/plugin-commonjs": "^17.0.0",
+      "@rollup/plugin-node-resolve": "^11.0.0",
+      "@rollup/plugin-typescript": "^8.0.0",
+      "@tsconfig/svelte": "^2.0.0",
+      "jest": "^27.5.1",
+      "rollup": "^2.3.4",
+      "rollup-plugin-css-only": "^3.1.0",
+      "rollup-plugin-livereload": "^2.0.0",
+      "rollup-plugin-svelte": "^7.0.0",
+      "rollup-plugin-terser": "^7.0.0",
+      "svelte": "3.48.0",
+      "svelte-check": "^2.0.0",
+      "svelte-preprocess": "^4.0.0",
+      "tslib": "^2.0.0",
+      "typescript": "4.3.5"
+    },
+    "dependencies": {
+      "@smui/checkbox": "^6.0.0-beta.16",
+      "@smui/data-table": "^6.0.0-beta.16",
+      "sirv-cli": "^1.0.0",
+      "svelte-navigator": "^3.1.5",
+      "utilcomps": "^2.0.4",
+      "uuid": "^8.3.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
