@@ -1,14 +1,14 @@
 <script lang="ts">
   import { Link } from "svelte-navigator"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
+  import { getCardsDB } from "../../store/cardsAPI"
   import InlineAddableList from "../../generics/InlineAddableList/InlineAddableList.svelte"
   import CardsTable from "./TableParts/CardsTable.svelte"
   import CustomFacesControl from "./SidebarParts/CustomFacesControl.svelte"
-  
-  import rawDummyCards from "./dummyCards"
-  const dummyCards: Card[] = rawDummyCards
 
-  $: cardsShown = dummyCards.filter(card => {
+  const allCards: Card[] = getCardsDB();
+
+  $: cardsShown = allCards.filter(card => {
     if (filterTags.length === 0) return true
 
     return filterTags.every(filterTag => card.tags.includes(filterTag))

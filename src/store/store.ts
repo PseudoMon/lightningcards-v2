@@ -12,7 +12,7 @@ import type { LiveDeck, Card } from "./types"
 function createDeckStore() {
   const currentDeck: LiveDeck | null = getCurrentDeck();
 
-  const { subscribe, set, update } = writable({
+  const { subscribe, update } = writable({
     uid: currentDeck?.uid || uuid(),
     title: currentDeck?.title || "Example Deck",
     mainFace: currentDeck?.mainFace || "Front",
@@ -73,4 +73,16 @@ function createDeckStore() {
   }
 }
 
+function createCardsStore() {
+  const { subscribe, update } = writable([]);
+
+  return {
+    subscribe,
+    addCard: (newCard: Card) => update(store => {
+      return { ...store, newCard }
+    })
+  }
+} 
+
 export const currentDeck = createDeckStore()
+export const heldCards = createCardsStore()
