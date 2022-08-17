@@ -2,6 +2,7 @@
   import { onMount, createEventDispatcher } from "svelte"
   import type { Card, CardFace as CardFaceType} from "../../../store/types"
   import { flash } from "../../../generics/MessageFlash/flasher"
+  import InlineAddableList from "../../../generics/InlineAddableList/InlineAddableList.svelte"
   import Tags from "./Tags.svelte"
   import CardFace from "./CardFace.svelte"
   
@@ -44,7 +45,11 @@
   {/each}
 
   <section class="extra-info">
-    <Tags bind:tags={tags} />
+   <!--  <Tags bind:tags={tags} /> -->
+    <div>
+      <h3>Tags</h3>
+      <InlineAddableList bind:dataset={tags} addingLabel="Add Tag" />
+    </div>
 
     <div>
       <h3>Notes:</h3>

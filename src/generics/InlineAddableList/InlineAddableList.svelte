@@ -2,7 +2,7 @@
   import { tick } from "svelte"
 
   export let dataset: string[]
-  export let label: string = "Data:"
+  export let label: string = ""
   export let addingLabel: string = "Add Data"
   export let style: string = ""
   export let className: string = ""
@@ -34,7 +34,7 @@
 </script>
 
 <div style={style} class={className}>
-  <span>{label}</span> 
+  {#if label}<span>{label}</span>{/if}
   <ol class="dataset">
     {#each dataset as data}
       <li on:click={() => handleRemoveData(data)}>
@@ -72,7 +72,6 @@
   li {
     display: inline-block;
     background-color: #eeeeee;
-    padding:  0.2em 0.5em;
     border-radius:  5px;
   }
 
@@ -84,6 +83,10 @@
   button {
     background-color: transparent;
     border:  none;
+    text-transform: none;
+    font-size: 0.8em;
+    padding: 10px 20px;
+    font-weight: 400;
   }
 
   .add-data {

@@ -113,12 +113,12 @@
     />
 
     <label>
-      Rename Front to
+      Rename Face 1 to
       <input type="text" bind:value={frontFaceName}>
     </label>
 
     <label>
-      Rename Back to
+      Rename Face 2 to
       <input type="text" bind:value={backFaceName}>
     </label>
   </form>

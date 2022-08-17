@@ -66,6 +66,20 @@
 
 	:global(button) {
 		cursor:  pointer;
+		padding: 10px 30px;
+		border-radius: 5px;
+		border: solid 1px #bbb;
+		color: #333;
+		background-color: transparent;
+		letter-spacing: .1rem;
+		text-transform: uppercase;
+		font-size: 11px;
+		font-weight: 600;
+	}
+
+	:global(button:hover) {
+		color: #000;
+		border-color: #888;
 	}
 
 	:global(body) {
