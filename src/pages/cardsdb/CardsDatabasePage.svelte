@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte"
   import { Link } from "svelte-navigator"
   import type { Card, CardFace as CardFaceType } from "../../store/types"
   import { getCardsDB } from "../../store/cardsAPI"
@@ -6,9 +7,9 @@
   import CardsTable from "./TableParts/CardsTable.svelte"
   import CustomFacesControl from "./SidebarParts/CustomFacesControl.svelte"
 
-  const allCards: Card[] = getCardsDB();
+  let allCards: Card[] = null;
 
-  $: cardsShown = allCards.filter(card => {
+  $: cardsShown = !allCards ? [] : allCards.filter(card => {
     if (filterTags.length === 0) return true
 
     return filterTags.every(filterTag => card.tags.includes(filterTag))
@@ -20,6 +21,10 @@
   let shownFaces = ["Front", "Back"]
   let customFaces = false
   let uidToCheckbox = {}
+
+  onMount(() => {
+    allCards = getCardsDB();
+  })
 
   function toggleCardCheckbox(card) {
     const idx = selectedCards.map(card => card.uid).indexOf(card.uid)
