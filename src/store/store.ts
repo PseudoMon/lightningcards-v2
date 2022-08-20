@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid"
 import { 
   getCurrentDeck, 
   saveCurrentDeck, 
+  getLiveDeck,
   addNewCard as addNewCardAPI,
   saveCard as saveCardAPI,
   removeCard as removeCardAPI,
@@ -69,6 +70,11 @@ function createDeckStore() {
       saveCurrentDeck(updatedDeck)
 
       return updatedDeck
+    }),
+
+    useDifferentDeck: (uid: string) => update(store => {
+      const newDeck = getLiveDeck(uid)
+      return newDeck
     })
   }
 }

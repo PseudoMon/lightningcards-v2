@@ -59,20 +59,6 @@ export function removeCard(uidToRemove: string): void {
   saveToLocal(DB_NAME, updatedCardsDB)
 }
 
-// export function getCardsFromTag(tag: string): Card[] {
-//   const cards = getCardsDB()
-//     .filter(card => card.tags.includes(tag))
-
-//   return cards
-// }
-
-// export function getCardsFromCategory(category: string): Card[] {
-//   const cards = getCardsDB()
-//     .filter(card => card.category === category)
-
-//   return cards
-// }
-
 export function getCardWithUID(cards: Card[], uid: string): Card | undefined {
   return cards.find(card => card.uid === uid)
 }
@@ -115,17 +101,67 @@ function liveDeckToDataDeck(deck: LiveDeck): DataDeck {
   return dataDeck
 }
 
+function dataDeckToLiveDeck(deck: DataDeck): LiveDeck {
+  const cardIds: string[] = deck.cardIds
+  const cardsDB: Card[] = getCardsDB()
+
+  const includedCards: Card[] = cardsDB.filter(card => cardIds.includes(card.uid))
+  const liveDeck: LiveDeck = {
+    uid: deck.uid, 
+    title: deck.title,
+    faces: deck.faces,
+    mainFace: deck.mainFace,
+    cards: includedCards,
+  }
+
+  return liveDeck
+}
+
 export function saveCurrentDeck(deck: LiveDeck): void {
-  const dataDeck = liveDeckToDataDeck(deck)
+  const dataDeck: DataDeck = liveDeckToDataDeck(deck)
 
   saveToLocal(CURRENT_DECK, dataDeck)
+  saveDeckToDB(dataDeck)
 }
 
 export function addNewDeck(deck: LiveDeck): void {
   const newDataDeck = liveDeckToDataDeck(deck)
 
-  const oldDecksDB = getDecksDB();
+  const oldDecksDB = getDecksDB()
   const newDecksDB = oldDecksDB.concat(newDataDeck)
 
   saveToLocal(DECKS_DB, newDecksDB)
+}
+
+function saveDeckToDB(deckToSave: DataDeck): void {
+  // TODO: It might be more efficient to only do this when switching decks,
+  // or maybe you shouldn't have currentDeck in local 
+  // storage at all (other than the uid)
+
+  const currentDecks: DataDeck[] = getDecksDB()
+
+  if (!currentDecks.find(deck => deck.uid === deckToSave.uid)) {
+    // If it doesn't yet exist, add it
+    saveToLocal(DECKS_DB, currentDecks.concat(deckToSave))
+  }
+  else {
+    // If it already exist, replace existing one
+    const newDecks: DataDeck[] = currentDecks.map(deck => {
+      if (deck.uid === deckToSave.uid) return deckToSave
+      else return deck
+    })
+    saveToLocal(DECKS_DB, newDecks)
+  }
+}
+
+export function getLiveDeck(uid: string): LiveDeck {
+  const allDecks: DataDeck[] = getDecksDB()
+
+  const foundDataDeck: DataDeck = allDecks.find(deck => deck.uid === uid)
+  if (!foundDataDeck) {
+    // throw something here
+  }
+
+  const foundLiveDeck: LiveDeck = dataDeckToLiveDeck(foundDataDeck)
+  return foundLiveDeck
 }

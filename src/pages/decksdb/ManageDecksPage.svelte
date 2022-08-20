@@ -1,7 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte"
+  import { useNavigate } from "svelte-navigator"
+  import { flash } from "../../generics/MessageFlash/flasher"
   import { getDecksDB } from "../../store/cardsAPI"
   import { DataDeck } from "../../store/types"
+  import { currentDeck } from "../../store/store"
+
+  const navigate = useNavigate()
 
   // Only contains uid and title
   interface SimpleDeck {
@@ -16,8 +21,10 @@
     decks = decksFromDB.map((deck) => ({ uid: deck.uid, title: deck.title }))
   })
 
-  function handleUseDeck() {
-    //TODO
+  function handleUseDeck(uid) {
+    currentDeck.useDifferentDeck(uid)
+    navigate("/deck")
+    flash("Deck loaded!")
   }
 
   function handleRemoveDeck() {
