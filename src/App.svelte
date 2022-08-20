@@ -7,6 +7,7 @@
 	import CardsDatabasePage from "./pages/cardsdb/CardsDatabasePage.svelte"
 	import ImportLegacyDeck from "./pages/cardsdb/ImportLegacyDeck.svelte"
 	import ManageDecksPage from "./pages/decksdb/ManageDecksPage.svelte"
+	import PracticePage from "./pages/practice/PracticePage.svelte"
 </script>
 
 <Router>
@@ -47,7 +48,7 @@
 	</Route>
 
 	<Route path="/practice">
-		PRACTICE HEREsdasdasd
+		<PracticePage />
 	</Route>
 
 
@@ -84,6 +85,17 @@
 	:global(button:hover) {
 		color: #000;
 		border-color: #888;
+	}
+
+	:global(select) {
+		border: none;
+		border-bottom: solid 2px #000;
+	  padding: 5px 10px 5px 2px;
+	 	background: transparent;
+	}
+
+	:global(select:focus, select:hover) {
+		border-color: var(--color-accent);
 	}
 
 	:global(body) {
