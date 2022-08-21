@@ -4,8 +4,13 @@
 
   const dispatch = createEventDispatcher()
 
-  let faceToShow: string = $currentDeck.faces[0] ?? null
-  let faceToGuess: string = $currentDeck.faces[1] ?? null
+  let faceToShowIdx: number = $currentDeck.faces[0] ? 0 : null
+  let faceToGuessIdx: number = $currentDeck.faces[1] ? 0 : null
+
+  function handleStart() {
+    if (faceToShowIdx === null || faceToGuessIdx === null) return
+    dispatch(start, { faceToShowIdx, faceToGuessIdx })
+  }
 </script>
 
 <h1>Start Practicing</h1>
@@ -14,7 +19,7 @@
 <section class="choose-face">
   <label>
     Face to show:
-    <select bind:value={faceToShow}>
+    <select bind:value={faceToShowIdx}>
       {#each $currentDeck.faces as face}
       <option value={face}>{face}</option>
       {/each}
@@ -23,7 +28,7 @@
 
   <label>
     Face to guess:
-    <select bind:value={faceToGuess}>
+    <select bind:value={faceToGuessIdx}>
       {#each $currentDeck.faces as face}
       <option value={face}>{face}</option>
       {/each}
@@ -31,7 +36,11 @@
   </label>
 </section>
 
-<button on:click={() => dispatch("start")}>Start</button>
+<button 
+  on:click={handleStart} 
+  disabled={faceToShowIdx === null || faceToGuessIdx === null}>
+  Start
+</button>
 
 <style>
   .choose-face {
