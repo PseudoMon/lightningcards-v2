@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte"
   import type { Card } from "../../../store/types"
+
+  const dispatch = createEventDispatcher()
 
   export let card: Card
   export let askedFaceIndex: number = 0
@@ -24,11 +27,19 @@
 
     isAsking = false
   }
+
+  function handleEditCard() {
+    // TODO. This might be difficult actually
+  }
+
+  function handleNext() {
+    dispatch("next", { isAnswerCorrect })
+  }
 </script>
 
 <div>
   <div class="card-display">
-    Nyehehe
+    {card.faces[askedFaceIndex].content}
   </div>
 
   {#if isAsking}
@@ -36,6 +47,12 @@
       <input type="text" bind:value={answerInput}>
       <button on:click|preventDefault={handleEnter}>Enter</button>
     </form>
+  {:else}
+  <div class="confirmbox">
+    <input type="text" value={answerInput} disabled>
+    <button on:click={handleEditCard}>Edit Card</button>
+    <button on:click={handleNext}>Next</button>
+  </div>
   {/if}
 </div>
 
@@ -73,7 +90,7 @@
     gap: 10px;
   }
 
-  .answerbox input {
+  .answerbox input, .confirmbox input {
     width: 100%;
     text-align: center;
   }
