@@ -19,9 +19,11 @@
       .concat(faceWithAnswer.content.toLowerCase())
 
     if (possibleAnswers.includes(answerInput.toLowerCase())) {
+      console.log('CORRECT')
       isAnswerCorrect = true
     }
     else {
+      console.log("WRONG")
       isAnswerCorrect = false
     }
 
@@ -34,11 +36,15 @@
 
   function handleNext() {
     dispatch("next", { isAnswerCorrect })
+    isAsking = true
   }
 </script>
 
 <div>
-  <div class="card-display">
+  <div 
+    class="card-display" 
+    class:wrong={!isAsking && !isAnswerCorrect} 
+    class:correct={!isAsking && isAnswerCorrect}>
     {card.faces[askedFaceIndex].content}
   </div>
 
@@ -79,7 +85,17 @@
     }
   }
 
-  .answerbox {
+  .card-display.wrong {
+    background-color: #FF6860;
+    color:  #563737;
+  }
+
+  .card-display.correct {
+    background-color: #bcf15b;
+    color: #231717; 
+  }
+
+  .answerbox, .confirmbox {
     width: 70%;
     margin: 1rem auto;
     padding: 0 0.5rem;
@@ -93,11 +109,13 @@
   .answerbox input, .confirmbox input {
     width: 100%;
     text-align: center;
+    padding: 6px 10px
   }
 
   .answerbox button {
     width: 80%;
     max-width: 640px;
+    background-color: var(--color-accent);
+    color:  #fff;
   }
-
 </style>

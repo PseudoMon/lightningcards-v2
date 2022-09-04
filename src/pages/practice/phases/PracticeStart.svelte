@@ -9,7 +9,7 @@
 
   function handleStart() {
     if (faceToShowIdx === null || faceToGuessIdx === null) return
-    dispatch(start, { faceToShowIdx, faceToGuessIdx })
+    dispatch("start", { faceToShowIdx, faceToGuessIdx })
   }
 </script>
 

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from "svelte"
+  import { get } from "svelte/store"
   import { shuffleArray } from "../../../utils/utils"
   import type { Card } from "../../../store/types"
   import { currentDeck } from "../../../store/store"
@@ -14,7 +15,8 @@
   let currentCardCount: number = 0
 
   onMount(() => {
-    cardsInPlay = shuffleArray(currentDeck.cards)
+    const currentCards: Card[] = get(currentDeck).cards
+    cardsInPlay = shuffleArray(currentCards)
   })
 
   function handleCorrectAnswer() {
@@ -35,6 +37,7 @@
   }
 </script>
 
+{#if cardsInPlay.length}
 <CardDisplay 
   card={cardsInPlay[currentCardCount]} 
   askedFaceIndex={askedFaceIndex}
@@ -43,4 +46,4 @@
   on:wrong={handleWrongAnswer}
   on:next={handleNextCard}
 />
-
+ {/if}

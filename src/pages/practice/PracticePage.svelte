@@ -3,8 +3,8 @@
   import PracticeOngoing from "./phases/PracticeOngoing.svelte"
   let currentPhase = 1
 
-  let askedFaceIndex: number = null
-  let answerFaceIndex: number = null
+  let askedFaceIndex: number = 0
+  let answerFaceIndex: number = 1
 
   function handleStart({ detail }) {
     const { faceToShowIdx, faceToGuessIdx } = detail
