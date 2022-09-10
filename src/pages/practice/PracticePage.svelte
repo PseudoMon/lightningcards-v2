@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { currentDeck } from "../../store/store"
   import { currentScore } from "../../store/scoreStore"
   import PracticeStart from "./phases/PracticeStart.svelte"
   import PracticeOngoing from "./phases/PracticeOngoing.svelte"
-  let currentPhase = 1
+  let currentPhase = 0
 
   let askedFaceIndex: number = 0
   let answerFaceIndex: number = 1
@@ -13,7 +14,7 @@
     askedFaceIndex = faceToShowIdx
     answerFaceIndex = faceToGuessIdx
     currentPhase = 1
-    currentScore.startPracticing()
+    currentScore.startPracticing($currentDeck.cards.length)
   }
 </script>
 

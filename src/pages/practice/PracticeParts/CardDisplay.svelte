@@ -22,12 +22,12 @@
       .concat(faceWithAnswer.content.toLowerCase())
 
     if (possibleAnswers.includes(answerInput.toLowerCase())) {
-      console.log('CORRECT')
       isAnswerCorrect = true
+      dispatch("correct")
     }
     else {
-      console.log("WRONG")
       isAnswerCorrect = false
+      dispatch("wrong")
     }
 
     isAsking = false
@@ -40,7 +40,7 @@
   }
 
   function handleNext() {
-    dispatch("next", { isAnswerCorrect })
+    dispatch("next")
     isAsking = true
     answerInput = ""
   }

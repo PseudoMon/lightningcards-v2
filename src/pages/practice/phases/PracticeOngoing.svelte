@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from "svelte"
   import { get } from "svelte/store"
+  import { currentScore } from "../../../store/scoreStore"
   import { shuffleArray } from "../../../utils/utils"
   import type { Card } from "../../../store/types"
   import { currentDeck } from "../../../store/store"
@@ -20,11 +21,11 @@
   })
 
   function handleCorrectAnswer() {
-
+    currentScore.playedCorrectCard(true)
   }
 
   function handleWrongAnswer() {
-
+    currentScore.playedCorrectCard(false)
   } 
 
   function handleNextCard() {

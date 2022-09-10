@@ -12,12 +12,11 @@ function createScoreStore() {
 
   return {
     subscribe,
-    startPracticing: () => update(store => ({ ...store, isPracticing: true })),
-    finishPracticing: () => update(store => ({ ...store, isPracticing: false })),
-    
-    setTotalCards: (newTotal) => update(store => (
-      { ...store, cardsTotal: newTotal }
+    startPracticing: (cardsTotal) => update(store => (
+      { ...store, cardsTotal, isPracticing: true }
     )),
+    
+    finishPracticing: () => update(store => ({ ...store, isPracticing: false })),
     
     playedCorrectCard: (isCorrect) => update(store => {
       const cardsPassed = store.cardsPassed + 1

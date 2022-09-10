@@ -5,7 +5,7 @@
 
 <div>
   {#if $currentScore.isPracticing}
-    x/x/x Cards 
+    {$currentScore.cardsCorrect}/{$currentScore.cardsPassed}/{$currentScore.cardsTotal} Cards 
   {:else}
     {$currentDeck.cards.length} cards in deck
   {/if}
