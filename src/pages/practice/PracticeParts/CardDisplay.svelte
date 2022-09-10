@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte"
+  import { createEventDispatcher, tick} from "svelte"
   import type { Card } from "../../../store/types"
 
   const dispatch = createEventDispatcher()
@@ -11,8 +11,11 @@
   let answerInput: string = ""
   let isAsking: boolean = true
   let isAnswerCorrect: boolean = false
+  let nextButton
+
+  $: answerSynsDisplay = card.faces[answerFaceIndex].synonyms.join(", ")
   
-  function handleEnter() {  
+  async function handleEnter() {  
     const faceWithAnswer = card.faces[answerFaceIndex]
     const possibleAnswers = faceWithAnswer
       .synonyms.map(syn => syn.toLowerCase())
@@ -28,6 +31,8 @@
     }
 
     isAsking = false
+    await tick()
+    nextButton.focus()
   }
 
   function handleEditCard() {
@@ -37,15 +42,22 @@
   function handleNext() {
     dispatch("next", { isAnswerCorrect })
     isAsking = true
+    answerInput = ""
   }
 </script>
 
 <div>
   <div 
     class="card-display" 
+    class:answered={!isAsking}
     class:wrong={!isAsking && !isAnswerCorrect} 
     class:correct={!isAsking && isAnswerCorrect}>
-    {card.faces[askedFaceIndex].content}
+    
+    <span class="question">{card.faces[askedFaceIndex].content}</span>
+    {#if !isAsking}
+      <span class="answer">{card.faces[answerFaceIndex].content}</span>
+      <span class="synonyms">{answerSynsDisplay}</span>
+    {/if}
   </div>
 
   {#if isAsking}
@@ -56,8 +68,10 @@
   {:else}
   <div class="confirmbox">
     <input type="text" value={answerInput} disabled>
-    <button on:click={handleEditCard}>Edit Card</button>
-    <button on:click={handleNext}>Next</button>
+    <div class="confirm-button">
+      <button on:click={handleEditCard}>Edit Card</button>
+      <button bind:this={nextButton} on:click={handleNext}>Next</button>
+    </div>
   </div>
   {/if}
 </div>
@@ -73,6 +87,7 @@
     background-color: #eeeeee;
     box-shadow: 5px 5px #8f8989;
     height: 120px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -87,12 +102,26 @@
 
   .card-display.wrong {
     background-color: #FF6860;
-    color:  #563737;
+    color:  #fff;
   }
 
   .card-display.correct {
     background-color: #bcf15b;
-    color: #231717; 
+  }
+
+  .answered .question {
+    font-size: 0.8em;
+    opacity: 0.5;
+    margin-bottom: 8px;
+  }
+
+  .answered.wrong .question {
+    color:  #000;
+  }
+
+  .answered .synonyms {
+    margin-top: 10px;
+    font-size: 0.5em;
   }
 
   .answerbox, .confirmbox {

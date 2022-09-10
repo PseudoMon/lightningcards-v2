@@ -1,5 +1,6 @@
 <script>
     import { Link } from 'svelte-navigator'
+    import SessionCounter from "./header/SessionCounter.svelte"
 </script>
 
 <header>
@@ -11,8 +12,7 @@
         <span><Link to="practice">Start Practice</Link></span>
     </nav>
 
-    <div>x cards in deck</div>
-    <!-- <SessionCounter/> -->
+    <SessionCounter/>
 </header>
 
 <style>

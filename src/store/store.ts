@@ -80,6 +80,7 @@ function createDeckStore() {
 }
 
 function createCardsStore() {
+  // usable for creating new deck after looking through card database
   const { subscribe, update } = writable([]);
 
   return {
