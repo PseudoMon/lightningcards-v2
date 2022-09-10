@@ -5,7 +5,7 @@
   const dispatch = createEventDispatcher()
 
   let faceToShowIdx: number = $currentDeck.faces[0] ? 0 : null
-  let faceToGuessIdx: number = $currentDeck.faces[1] ? 0 : null
+  let faceToGuessIdx: number = $currentDeck.faces[1] ? 1 : null
 
   function handleStart() {
     if (faceToShowIdx === null || faceToGuessIdx === null) return
@@ -20,8 +20,8 @@
   <label>
     Face to show:
     <select bind:value={faceToShowIdx}>
-      {#each $currentDeck.faces as face}
-      <option value={face}>{face}</option>
+      {#each $currentDeck.faces as face, faceIdx}
+        <option value={faceIdx}>{face}</option>
       {/each}
     </select>
   </label>
@@ -29,8 +29,8 @@
   <label>
     Face to guess:
     <select bind:value={faceToGuessIdx}>
-      {#each $currentDeck.faces as face}
-      <option value={face}>{face}</option>
+      {#each $currentDeck.faces as face, faceIdx}
+      <option value={faceIdx}>{face}</option>
       {/each}
     </select>
   </label>
