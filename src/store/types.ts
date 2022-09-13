@@ -1,4 +1,4 @@
-interface CardFace {
+export interface CardFace {
   faceName: string; // e.g. "Hanzi", "Japanese"
   // default to "Front" and "Back"
   content: string;

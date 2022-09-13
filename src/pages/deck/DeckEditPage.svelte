@@ -45,6 +45,7 @@
   </h1>
 
   <div class="header">
+    <button on:click={() => navigate("settings")}>Edit Deck Settings</button>
     <button on:click={ () => editingName = true }>Edit Deck Name</button>
     <button on:click={ () =>  navigate("addcard") }>Add New Card</button>
     <button on:click={ onOpenImportExporter }>Import/Export Deck</button>

@@ -8,7 +8,7 @@ import {
   saveCard as saveCardAPI,
   removeCard as removeCardAPI,
 } from "./cardsAPI"
-import type { LiveDeck, Card } from "./types"
+import type { LiveDeck, Card, CardFace } from "./types"
 
 function createDeckStore() {
   const currentDeck: LiveDeck | null = getCurrentDeck();
@@ -37,7 +37,7 @@ function createDeckStore() {
     addNewCard: (newCard: Card) => update(store => {
       addNewCardAPI(newCard)
 
-      const updatedDeck = {
+      const updatedDeck: LiveDeck = {
         ...store,
         cards: store.cards.concat(newCard)
       }
@@ -75,7 +75,37 @@ function createDeckStore() {
     useDifferentDeck: (uid: string) => update(store => {
       const newDeck = getLiveDeck(uid)
       return newDeck
-    })
+    }),
+
+    renameFace: (oldFace, newFace) => update(store => {
+      // Replace the face that's the same as oldFace, leaves everything else be
+      const newFaces: string[] = store.faces.map(face => face === oldFace ? newFace : face);
+      
+      // Do the same thing but with every card in this deck
+      const newCards: Card[] = store.cards.map(card => {
+        const newCardFaces: CardFace[] = card.faces.map(face => ({
+          ...face,
+          faceName: face.faceName === oldFace ? newFace : face.faceName
+        }))
+
+        const updatedCard: Card = { ...card, faces: newCardFaces } 
+        saveCardAPI(updatedCard)
+        return updatedCard
+      })
+
+      // Change main face if that's the face being renamed
+      const newMainFace: string = store.mainFace === oldFace ? newFace : store.mainFace
+
+      const updatedDeck: LiveDeck = { 
+        ...store, 
+        cards: newCards, 
+        faces: newFaces, 
+        mainFace: newMainFace  
+      }
+
+      saveCurrentDeck(updatedDeck)
+      return updatedDeck
+    }),
   }
 }
 

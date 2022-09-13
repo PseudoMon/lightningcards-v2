@@ -4,6 +4,7 @@
 	import DeckEditPage from './pages/deck/DeckEditPage.svelte'
 	import AddCardPage from "./pages/deck/AddCardPage.svelte"
 	import EditCardPage from "./pages/deck/EditCardPage.svelte"
+	import DeckSettingsPage from "./pages/deck/DeckSettingsPage.svelte"
 	import CardsDatabasePage from "./pages/cardsdb/CardsDatabasePage.svelte"
 	import ImportLegacyDeck from "./pages/cardsdb/ImportLegacyDeck.svelte"
 	import ManageDecksPage from "./pages/decksdb/ManageDecksPage.svelte"
@@ -30,6 +31,10 @@
 
 		<Route path="/editcard/:uid" let:params>
 			<EditCardPage carduid={params.uid} />
+		</Route>
+
+		<Route path="/settings">
+			<DeckSettingsPage/>
 		</Route>
 	</Route>
 
@@ -114,4 +119,25 @@
 	}
 
 	:global(main > h1) { text-align: center; }
+
+	:global(.generic-form) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  :global(.generic-form > label), :global(.generic-form .form-child) {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 1em;
+    align-items: center;
+  }
+
+  :global(.generic-form > label) {
+    text-align: right;
+  }
+
+  :global(.generic-form .form-child) {
+    text-align: left;
+  } 
 </style>
