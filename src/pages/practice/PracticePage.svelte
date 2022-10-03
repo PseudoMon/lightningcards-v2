@@ -3,6 +3,7 @@
   import { currentScore } from "../../store/scoreStore"
   import PracticeStart from "./phases/PracticeStart.svelte"
   import PracticeOngoing from "./phases/PracticeOngoing.svelte"
+  import EndScreen from "./phases/EndScreen.svelte"
   let currentPhase = 0
 
   let askedFaceIndex: number = 0
@@ -16,6 +17,10 @@
     currentPhase = 1
     currentScore.startPracticing($currentDeck.cards.length)
   }
+
+  function handleEnd() {
+    currentPhase = 2
+  }
 </script>
 
 <main>
@@ -26,7 +31,11 @@
     <PracticeOngoing 
       askedFaceIndex={askedFaceIndex}
       answerFaceIndex={answerFaceIndex}
+      on:end={handleEnd}
     />
+  {/if}
+  {#if currentPhase === 2}
+    <EndScreen />
   {/if}
 </main>
 

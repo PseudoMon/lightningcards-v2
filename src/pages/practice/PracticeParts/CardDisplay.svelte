@@ -12,6 +12,7 @@
   let isAsking: boolean = true
   let isAnswerCorrect: boolean = false
   let nextButton
+  let textInput
 
   $: answerSynsDisplay = card.faces[answerFaceIndex].synonyms.join(", ")
   
@@ -39,10 +40,12 @@
     // TODO. This might be difficult actually
   }
 
-  function handleNext() {
+  async function handleNext() {
     dispatch("next")
     isAsking = true
     answerInput = ""
+    await tick()
+    textInput.focus()
   }
 </script>
 
@@ -62,7 +65,7 @@
 
   {#if isAsking}
     <form class="answerbox">
-      <input type="text" bind:value={answerInput}>
+      <input type="text" bind:this={textInput} bind:value={answerInput}>
       <button on:click|preventDefault={handleEnter}>Enter</button>
     </form>
   {:else}
@@ -70,7 +73,7 @@
     <input type="text" value={answerInput} disabled>
     <div class="confirm-button">
       <button on:click={handleEditCard}>Edit Card</button>
-      <button bind:this={nextButton} on:click={handleNext}>Next</button>
+      <button class="nextbutton" bind:this={nextButton} on:click={handleNext}>Next</button>
     </div>
   </div>
   {/if}
@@ -144,6 +147,11 @@
   .answerbox button {
     width: 80%;
     max-width: 640px;
+    background-color: var(--color-accent);
+    color:  #fff;
+  }
+
+  .nextbutton {
     background-color: var(--color-accent);
     color:  #fff;
   }
